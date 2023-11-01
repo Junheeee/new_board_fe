@@ -1,4 +1,3 @@
-import './assets/css/bootstrap.css';
 import FormContainer from './containers/board/FormContainer';
 import ListContainer from './containers/board/ListContainer';
 import Layout from './layouts/Layout';
@@ -6,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useNavigate } from 'react-router-dom';
 
 const queryClient = new QueryClient({
   defaultOptions: {
