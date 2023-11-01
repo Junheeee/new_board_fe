@@ -1,6 +1,6 @@
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
-export default function C_Dropdown({ categoryArr }) {
+export default function CustomDropdown({ categoryArr }) {
   return (
     <div>
       <DropdownButton id='dropdown-basic-button' title='카테고리'>

@@ -1,13 +1,16 @@
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Pagination from 'react-bootstrap/Pagination';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import { useNavigate } from 'react-router-dom';
+import CustomPagination from '../custom/CustomPagination';
+import boardApi from '../../service/board';
+import { format } from 'date-fns';
 
 export default function BoardList() {
   const navigate = useNavigate();
+  const { data, isFetching } = boardApi.GetBoardList();
 
   return (
     <div>
@@ -31,54 +34,39 @@ export default function BoardList() {
         </div>
       </div>
 
-      <Table className='text-center' striped bordered hover size='sm'>
-        <thead>
-          <tr className=''>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>오늘 날씨가 좋지 않네요</td>
-            <td>주니</td>
-            <td>23-11-01</td>
-            <td>199</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>오늘 날씨가 좋지 않네요</td>
-            <td>주니</td>
-            <td>23-11-01</td>
-            <td>199</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>오늘 날씨가 좋지 않네요</td>
-            <td>주니</td>
-            <td>23-11-01</td>
-            <td>199</td>
-          </tr>
-        </tbody>
-      </Table>
+      {!isFetching ? (
+        <>
+          <Table className='text-center' striped bordered hover size='sm'>
+            <thead>
+              <tr className=''>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((board, i) => {
+                const date = format(new Date(board.regDate), 'yyyy-MM-dd');
+                return (
+                  <tr key={i}>
+                    <td>{board.boardSno}</td>
+                    <td>{board.title}</td>
+                    <td>{board.regUser}</td>
+                    <td>{date}</td>
+                    <td>{board.views}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
 
-      <div className='d-flex justify-content-center my-2'>
-        <Pagination>
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>1</Pagination.Item>
-          <Pagination.Item>2</Pagination.Item>
-          <Pagination.Item>3</Pagination.Item>
-          <Pagination.Item>4</Pagination.Item>
-          <Pagination.Item>5</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
-        </Pagination>
-      </div>
+          <CustomPagination />
+        </>
+      ) : (
+        <>로딩중</>
+      )}
     </div>
   );
 }
