@@ -1,16 +1,38 @@
-export interface IBoardList {
+export interface IBoardListRs {
   boardSno: number;
   title: string;
   regDate: string;
-  regUser: string;
+  cstmrNm: number;
   ctgrDivCd: string;
   views: number;
 }
 
-export interface IBoardRegister {
+export interface IBoardCreateRq {
+  title: string;
+  content: string;
+  cstmrSno: number;
+  ctgrDivCd: string;
+}
+
+export interface IBoardDetailRs {
   boardSno: number;
   title: string;
   content: string;
-  regUser: string;
+  cstmrSno: number;
+  cstmrNm: string;
+  regDate: string;
   ctgrDivCd: string;
+  views: number;
+}
+
+export interface IBoardUpdateRq {
+  boardSno: number;
+  title: string;
+  content: string;
+  ctgrDivCd: string;
+}
+
+export interface IBoardCtgrRs {
+  ctgrDivCd: string;
+  ctgrNm: string;
 }

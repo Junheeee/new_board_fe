@@ -1,27 +1,36 @@
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import { useNavigate } from 'react-router-dom';
 import CustomPagination from '../custom/CustomPagination';
 import boardApi from '../../service/board';
 import { format } from 'date-fns';
+import CustomDropdown from '../custom/CustomDropdown';
+import { useEffect, useState } from 'react';
 
 export default function BoardList() {
   const navigate = useNavigate();
-  const { data, isFetching } = boardApi.GetBoardList();
+  const [choiceVal, setChoiceVal] = useState<string>();
+  const { data, isFetching, refetch } = boardApi.GetBoardList(
+    choiceVal ? choiceVal : 'ALL'
+  );
+
+  const handlerDropdownClick = (val: string) => {
+    setChoiceVal(val);
+  };
+
+  useEffect(() => {
+    if (choiceVal) refetch();
+  }, [choiceVal]);
 
   return (
     <div>
       <div className='py-2 mb-1 d-flex justify-content-between align-items-center'>
-        <div>
-          <DropdownButton id='dropdown-basic-button' title='카테고리'>
-            <Dropdown.Item href='#/action-1'>구분1</Dropdown.Item>
-            <Dropdown.Item href='#/action-2'>구분2</Dropdown.Item>
-            <Dropdown.Item href='#/action-3'>구분3</Dropdown.Item>
-          </DropdownButton>
-        </div>
+        <CustomDropdown
+          choiceVal={choiceVal}
+          handlerDropdownClick={handlerDropdownClick}
+          type='view'
+        />
         <div>
           <Button
             type='submit'
@@ -50,10 +59,15 @@ export default function BoardList() {
               {data.map((board, i) => {
                 const date = format(new Date(board.regDate), 'yyyy-MM-dd');
                 return (
-                  <tr key={i}>
+                  <tr
+                    key={i}
+                    onClick={() => {
+                      navigate(`/board/detail/${board.boardSno}`);
+                    }}
+                  >
                     <td>{board.boardSno}</td>
                     <td>{board.title}</td>
-                    <td>{board.regUser}</td>
+                    <td>{board.cstmrNm}</td>
                     <td>{date}</td>
                     <td>{board.views}</td>
                   </tr>
