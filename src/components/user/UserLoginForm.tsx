@@ -1,12 +1,52 @@
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { IUserLoginRq } from '../../types/user';
+import { useState } from 'react';
+import userApi from '../../service/user';
 
 export default function UserLoginForm() {
   const navigate = useNavigate();
+  const PostUserLogin = userApi.PostUserLogin();
+
+  const [rq, setRq] = useState<IUserLoginRq>({
+    loginId: '',
+    loginPswd: ''
+  });
 
   const handlerJoin = () => {
     navigate('/user/join');
   };
+
+  const handlerOnChange = (e: any) => {
+    const { id, value } = e.target;
+    handlerChangeRq(id, value);
+  };
+
+  const handlerSubmit = () => {
+    PostUserLogin.mutate(rq, {
+      onSuccess: data => {
+        if (data) {
+          alert('로그인 하신걸 환영해용!!! (๑•᎑•๑)');
+          navigate('/');
+        } else {
+          alert('실패하셨네요.. ㅠ.ㅠ');
+          setRq({
+            loginId: '',
+            loginPswd: ''
+          });
+        }
+      }
+    });
+  };
+
+  const handlerChangeRq = (id: string, value: string) => {
+    const _rq = {
+      ...rq,
+      [id]: value
+    };
+    setRq(_rq);
+  };
+
   return (
     <div>
       <div className='py-3'>
@@ -17,13 +57,22 @@ export default function UserLoginForm() {
           <Form style={{ minWidth: '400px' }}>
             <Form.Group className='mb-3'>
               <Form.Label>ID</Form.Label>
-              <Form.Control type='text' placeholder='아이디를 입력해주세요.' />
+              <Form.Control
+                type='text'
+                placeholder='아이디를 입력해주세요.'
+                id='loginId'
+                onChange={handlerOnChange}
+                value={rq?.loginId}
+              />
             </Form.Group>
-            <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
+            <Form.Group className='mb-3'>
               <Form.Label>PASSWORD</Form.Label>
               <Form.Control
                 type='password'
                 placeholder='비밀번호를 입력해주세요.'
+                id='loginPswd'
+                onChange={handlerOnChange}
+                value={rq?.loginPswd}
               />
             </Form.Group>
           </Form>
@@ -41,7 +90,9 @@ export default function UserLoginForm() {
             <span>뉴보드 ~(˘▾˘~)</span>
           </div>
           <div className='py-1'>
-            <Button variant='warning'>로그인 꾸욱</Button>
+            <Button variant='warning' onClick={handlerSubmit}>
+              로그인 꾸욱
+            </Button>
           </div>
         </div>
       </div>
