@@ -6,6 +6,8 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import DetailContainer from './containers/board/DetailContainer';
+import LoginContainer from './containers/user/LoginContainer';
+import JoinContainer from './containers/user/JoinContainer';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +28,8 @@ function App() {
               <Route path='/' element={<ListContainer />} />
               <Route path='/board/create' element={<FormContainer />} />
               <Route path='/board/detail/:no' element={<DetailContainer />} />
+              <Route path='/user/login' element={<LoginContainer />} />
+              <Route path='/user/join' element={<JoinContainer />} />
             </Routes>
           </Container>
         </Layout>
