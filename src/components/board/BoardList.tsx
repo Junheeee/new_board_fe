@@ -1,5 +1,12 @@
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+import {
+  Button,
+  Card,
+  Table,
+  Container,
+  Row,
+  Col,
+  Spinner
+} from 'react-bootstrap';
 
 import { useNavigate } from 'react-router-dom';
 import CustomPagination from '../custom/CustomPagination';
@@ -15,6 +22,8 @@ export default function BoardList() {
     choiceVal ? choiceVal : 'ALL'
   );
 
+  const isLogin = JSON.parse(String(localStorage.getItem('isLogin')));
+
   const handlerDropdownClick = (val: string) => {
     setChoiceVal(val);
   };
@@ -24,63 +33,79 @@ export default function BoardList() {
   }, [choiceVal]);
 
   return (
-    <div>
-      <div className='py-2 mb-1 d-flex justify-content-between align-items-center'>
-        <CustomDropdown
-          choiceVal={choiceVal}
-          handlerDropdownClick={handlerDropdownClick}
-          type='view'
-        />
-        <div>
-          <Button
-            type='submit'
-            onClick={() => {
-              navigate('/board/create');
-            }}
-          >
-            새 글
-          </Button>
-        </div>
-      </div>
-
-      {!isFetching ? (
-        <>
-          <Table className='text-center' striped bordered hover size='sm'>
-            <thead>
-              <tr className=''>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((board, i) => {
-                const date = format(new Date(board.regDate), 'yyyy-MM-dd');
-                return (
-                  <tr
-                    key={i}
-                    onClick={() => {
-                      navigate(`/board/detail/${board.boardSno}`);
-                    }}
+    <>
+      <Container fluid>
+        <Row>
+          <Col md='12'>
+            <Card className='card-plain table-plain-bg'>
+              <Card.Header
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <CustomDropdown
+                  choiceVal={choiceVal}
+                  handlerDropdownClick={handlerDropdownClick}
+                  type='view'
+                />
+                <Card.Title as='h4'>뉴보드 게시판 입니다! ૮⑅ᐡ•ﻌ•ᐡა</Card.Title>
+                {isLogin ? (
+                  <Button
+                    className='btn-primary'
+                    onClick={() => navigate('/board/write/0')}
                   >
-                    <td>{board.boardSno}</td>
-                    <td>{board.title}</td>
-                    <td>{board.cstmrNm}</td>
-                    <td>{date}</td>
-                    <td>{board.views}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-
-          <CustomPagination />
-        </>
-      ) : (
-        <>로딩중</>
-      )}
-    </div>
+                    새 글
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
+              </Card.Header>
+              <Card.Body className='table-full-width table-responsive px-0'>
+                {!isFetching ? (
+                  <Table className='table-hover'>
+                    <thead>
+                      <tr>
+                        <th className='border-0'>번호</th>
+                        <th className='border-0'>제목</th>
+                        <th className='border-0'>작성자</th>
+                        <th className='border-0'>작성일</th>
+                        <th className='border-0'>조회수</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.map((board, i) => {
+                        const date = format(
+                          new Date(board.regDt),
+                          'yyyy-MM-dd'
+                        );
+                        return (
+                          <tr
+                            key={i}
+                            onClick={() => {
+                              navigate(`/board/detail/${board.brdSno}`);
+                            }}
+                          >
+                            <td>{board.brdSno}</td>
+                            <td>{board.title}</td>
+                            <td>{board.cstmrNm}</td>
+                            <td>{date}</td>
+                            <td>{board.views}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <Spinner animation='border' role='status'>
+                    <span className='visually-hidden'>Loading...</span>
+                  </Spinner>
+                )}
+              </Card.Body>
+              <Card.Footer>
+                <CustomPagination />
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }

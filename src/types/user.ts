@@ -8,3 +8,9 @@ export interface IUserLoginRq {
   loginId: string;
   loginPswd: string;
 }
+
+export interface IUserLoginRs {
+  cstmrSno: number;
+  loginId: string;
+  cstmrNm: string;
+}

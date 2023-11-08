@@ -26,6 +26,7 @@ export default function UserLoginForm() {
     PostUserLogin.mutate(rq, {
       onSuccess: data => {
         if (data) {
+          localStorage.setItem('isLogin', JSON.stringify(data));
           alert('로그인 하신걸 환영해용!!! (๑•᎑•๑)');
           navigate('/');
         } else {

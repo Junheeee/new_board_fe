@@ -44,14 +44,14 @@ const boardApi = {
   },
 
   getBoardDetailKey: GET_BOARD_DETAIL,
-  getBoardDetailFn: async (boardSno: number): Promise<IBoardDetailRs> => {
-    const res = await axiosInstance.get(`/board/detail?boardSno=${boardSno}`);
+  getBoardDetailFn: async (brdSno: number): Promise<IBoardDetailRs> => {
+    const res = await axiosInstance.get(`/board/detail?brdSno=${brdSno}`);
     return res.data;
   },
-  GetBoardDetail: function (boardSno: number) {
+  GetBoardDetail: function (brdSno: number) {
     return useQuery({
       queryKey: [this.getBoardDetailKey],
-      queryFn: () => this.getBoardDetailFn(boardSno)
+      queryFn: () => this.getBoardDetailFn(brdSno)
     });
   },
 
@@ -65,8 +65,8 @@ const boardApi = {
   },
 
   getBoardDeleteKey: GET_BOARD_DELETE,
-  getBoardDeleteFn: async (boardSno: number): Promise<number> => {
-    const res = await axiosInstance.get(`/board/delete?boardSno=${boardSno}`);
+  getBoardDeleteFn: async (brdSno: number): Promise<number> => {
+    const res = await axiosInstance.get(`/board/delete?brdSno=${brdSno}`);
     return res.data;
   },
   GetBoardDelete: function () {
@@ -86,10 +86,8 @@ const boardApi = {
   },
 
   postBoardViewsKey: POST_BOARD_VIEWS,
-  postBoardViewsFn: async (boardSno: number): Promise<number> => {
-    const res = await axiosInstance.post(
-      `/board/updateViews?boardSno=${boardSno}`
-    );
+  postBoardViewsFn: async (brdSno: number): Promise<number> => {
+    const res = await axiosInstance.post(`/board/updateViews?brdSno=${brdSno}`);
     return res.data;
   },
   PostBoardViews: function () {

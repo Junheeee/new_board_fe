@@ -1,7 +1,7 @@
 export interface IBoardListRs {
-  boardSno: number;
+  brdSno: number;
   title: string;
-  regDate: string;
+  regDt: string;
   cstmrNm: number;
   ctgrDivCd: string;
   views: number;
@@ -15,18 +15,18 @@ export interface IBoardCreateRq {
 }
 
 export interface IBoardDetailRs {
-  boardSno: number;
+  brdSno: number;
   title: string;
   content: string;
   cstmrSno: number;
   cstmrNm: string;
-  regDate: string;
+  regDt: string;
   ctgrDivCd: string;
   views: number;
 }
 
 export interface IBoardUpdateRq {
-  boardSno: number;
+  brdSno: number;
   title: string;
   content: string;
   ctgrDivCd: string;
