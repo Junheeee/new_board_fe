@@ -42,97 +42,114 @@ export default function BoardDetail({ detailNo }) {
 
   return (
     <>
-      <Container fluid>
-        <Row>
-          <Col>
-            <Card>
-              {!isFetching && data ? (
-                <>
-                  <Card.Header>
+      <Card>
+        {!isFetching && data ? (
+          <>
+            <Card.Header>
+              <Row>
+                <Col md='9' style={{ display: 'flex', alignItems: 'center' }}>
+                  <Card.Title
+                    as='h4'
+                    style={{ fontWeight: 600, paddingRight: '10px' }}
+                  >
+                    {data?.title}
+                  </Card.Title>
+                  <p className='card-category'>| {data?.ctgrDivCd}</p>
+                </Col>
+                <Col md='3'>
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row-reverse' }}
+                  >
+                    <p className='card-category'>
+                      {format(new Date(data.regDt), 'yyyy-MM-dd / hh:mm:dd')}
+                    </p>
+                  </div>
+
+                  <div
+                    style={{ display: 'flex', flexDirection: 'row-reverse' }}
+                  >
+                    <p className='card-category'>{data?.cstmrNm}</p>
+                  </div>
+                </Col>
+              </Row>
+            </Card.Header>
+
+            <Card.Body>
+              <Form>
+                <Row>
+                  <Col>
                     <div
                       style={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
+                        borderBottom: '1px solid #e3e3e3',
+                        marginBottom: '10px'
                       }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Card.Title
-                          as='h4'
-                          style={{ fontWeight: 600, paddingRight: '10px' }}
-                        >
-                          {data?.title}
-                        </Card.Title>
-                        <p className='card-category'>| {data?.ctgrDivCd}</p>
-                      </div>
-                      <p className='card-category'>
-                        {format(new Date(data.regDt), 'yyyy-MM-dd / hh:mm:dd')}
-                      </p>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end'
-                      }}
-                    >
-                      <p className='card-category'>{data?.cstmrNm}</p>
-                    </div>
-                  </Card.Header>
-                  <Card.Body>
-                    <Form>
-                      <Form.Group>
-                        <Form.Control
-                          cols={80}
-                          value={data?.content}
-                          onChange={e => e.preventDefault}
-                          placeholder='내용'
-                          rows={15}
-                          as='textarea'
-                          readOnly
-                        ></Form.Control>
-                      </Form.Group>
-                      <div
+                    ></div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Control
                         style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          margin: '10px'
+                          padding: '8px 12px',
+                          resize: 'none',
+                          outline: 'none'
                         }}
+                        plaintext
+                        value={data?.content}
+                        onChange={e => e.preventDefault}
+                        placeholder='내용'
+                        readOnly
+                        cols={80}
+                        rows={(data.content.match(/\n/g) || []).length + 2}
+                        as='textarea'
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        margin: '10px'
+                      }}
+                    >
+                      <Button
+                        className='btn-primary btn-fill'
+                        style={{ marginRight: '10px' }}
+                        onClick={handlerBack}
                       >
-                        <Button
-                          className='btn-primary btn-fill'
-                          style={{ marginRight: '10px' }}
-                          onClick={handlerBack}
-                        >
-                          목록
-                        </Button>
-                        {isLogin.cstmrSno === data.cstmrSno ? (
-                          <>
-                            <Button
-                              className='btn-primary btn-fill'
-                              style={{ marginRight: '10px' }}
-                              onClick={() => {
-                                navigate(`/board/write/${detailNo}`);
-                              }}
-                            >
-                              수정
-                            </Button>
-                            <Button
-                              className='btn-danger btn-fill'
-                              onClick={handlerDelete}
-                            >
-                              삭제
-                            </Button>
-                          </>
-                        ) : null}
-                      </div>
-                    </Form>
-                  </Card.Body>
-                </>
-              ) : null}
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      {/* </> */}
+                        목록
+                      </Button>
+                      {isLogin?.cstmrSno === data.cstmrSno ? (
+                        <>
+                          <Button
+                            className='btn-primary btn-fill'
+                            style={{ marginRight: '10px' }}
+                            onClick={() => {
+                              navigate(`/board/write/${detailNo}`);
+                            }}
+                          >
+                            수정
+                          </Button>
+                          <Button
+                            className='btn-danger btn-fill'
+                            onClick={handlerDelete}
+                          >
+                            삭제
+                          </Button>
+                        </>
+                      ) : null}
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </Card.Body>
+          </>
+        ) : null}
+      </Card>
     </>
   );
 }
