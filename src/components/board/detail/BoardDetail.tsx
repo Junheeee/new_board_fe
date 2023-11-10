@@ -10,14 +10,14 @@ import {
   Spinner,
   InputGroup
 } from 'react-bootstrap';
-import boardApi from '../../service/board';
+import boardApi from '../../../service/board';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
-export default function BoardDetail({ detailNo }) {
+export default function BoardDetail({ detailNo, isLogin }) {
   const navigate = useNavigate();
   const { data, isFetching } = boardApi.GetBoardDetail(detailNo);
-  const isLogin = JSON.parse(String(localStorage.getItem('isLogin')));
+  // const isLogin = JSON.parse(String(localStorage.getItem('isLogin')));
 
   const GetBoardDelete = boardApi.GetBoardDelete();
   const PostBoardUpdateViews = boardApi.PostBoardViews();
@@ -60,15 +60,21 @@ export default function BoardDetail({ detailNo }) {
                   <div
                     style={{ display: 'flex', flexDirection: 'row-reverse' }}
                   >
-                    <p className='card-category'>
-                      {format(new Date(data.regDt), 'yyyy-MM-dd / hh:mm:dd')}
-                    </p>
-                  </div>
-
-                  <div
-                    style={{ display: 'flex', flexDirection: 'row-reverse' }}
-                  >
-                    <p className='card-category'>{data?.cstmrNm}</p>
+                    <div>
+                      <p className='card-category'>
+                        {format(new Date(data.regDt), 'yyyy-MM-dd / hh:mm:dd')}
+                      </p>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <p className='card-category'>조회 {data?.views + 1}</p>
+                        <p className='card-category'>ㅣ</p>
+                        <p className='card-category'>{data?.cstmrNm}</p>
+                      </div>
+                    </div>
                   </div>
                 </Col>
               </Row>
